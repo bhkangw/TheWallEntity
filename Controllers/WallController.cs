@@ -34,7 +34,8 @@ namespace TheWallEntity.Controllers
             // ViewBag.UserInfo = user;
             ViewBag.UserInfo = ActiveUser;
 
-            ViewBag.messages = _context.messages.Include(m => m.User).ToList();
+            ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
+            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
             return View();
         }
 
@@ -54,6 +55,30 @@ namespace TheWallEntity.Controllers
                     UpdatedAt = DateTime.Now
                 };
                 _context.messages.Add(message);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.UserInfo = ActiveUser;
+            return View("Index");
+        }
+
+        [HttpPost]
+        [Route("postcomment/{MessageId}")]
+        public IActionResult PostComment (ViewComment commentpost, int MessageId)
+        {
+            if (ActiveUser == null)
+                return RedirectToAction("Index", "Home");
+            if(ModelState.IsValid)
+            {
+                Comment comment = new Comment
+                {
+                    UserId = ActiveUser.UserId,
+                    MessageId = MessageId,
+                    CommentContent = commentpost.CContent,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
+                _context.comments.Add(comment);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
