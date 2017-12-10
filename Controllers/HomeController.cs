@@ -32,7 +32,7 @@ namespace TheWallEntity.Controllers
         public IActionResult Register(RegisterUser newUser)
         {
             if (_context.users.Where(u => u.Email == newUser.Email).SingleOrDefault() != null)
-                ModelState.AddModelError("Username", "Username in use");
+                ModelState.AddModelError("Email", "Email already in use");
 
             if (ModelState.IsValid)
             {
@@ -44,28 +44,44 @@ namespace TheWallEntity.Controllers
                     LastName = newUser.LastName,
                     Email = newUser.Email,
                     Password = hasher.HashPassword(newUser, newUser.Password),
-                    CreatedAt = NOW(),
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 };
 
                 User theUser = _context.Add(User).Entity;
                 _context.SaveChanges();
 
                 HttpContext.Session.SetInt32("id", theUser.UserId);
-                return RedirectToAction("thewall");
+                return RedirectToAction("Index", "Wall");
             }
             return View("Index");
         }
 
         [HttpPost]
         [Route("/login")]
-        public IActionResult Login(LoginUser user)
+        public IActionResult Login(LoginUser logUser)
         {
-            if (ModelState.IsValid)
+            PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
+            User userToLog = _context.users.Where(u => u.Email == logUser.LogEmail).SingleOrDefault();
+            // User userToLog = _context.users.SingleOrDefault(u => u.Email == logUser.LogEmail);
+            if(userToLog == null)
+                ModelState.AddModelError("LogEmail", "Cannot find Email");
+            else if( hasher.VerifyHashedPassword(logUser, userToLog.Password, logUser.LogPassword) == 0)
             {
-                // insert user into DB
+                ModelState.AddModelError("LogPassword", "Wrong Password");
             }
-            return View("Index");
+            if(!ModelState.IsValid)
+                return View("Index");
+            HttpContext.Session.SetInt32("id", userToLog.UserId);
+            return RedirectToAction("Index", "Wall");
         }
 
+        [HttpGet]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
     }
 }

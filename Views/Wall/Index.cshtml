@@ -1,0 +1,23 @@
+<br> @model TheWallEntity.Models.ViewMessage
+<a href="logout">Log Out</a>
+<h1>Welcome @ViewBag.UserInfo.FirstName</h1>
+<div class="container">
+    <p>Post a message</p>
+    <form action="/postmessage" method="POST">
+        <textarea asp-for="MContent" cols="80" rows="3"></textarea>
+        <span asp-validation-for="MContent" class="text-danger"></span>
+        <br>
+        <input type="submit" value="Post a message" class="btn btn-primary">
+    </form><br><br>
+
+    @foreach (var m in ViewBag.messages){
+    <h5>@m.User.FirstName - @m.CreatedAt </h5>
+    <h4>@m.MessageContent</h4>
+    <p>Post a comment</p>
+    <form action="/postcomment/@m.MessageId" method="POST">
+        <textarea name="CContent" cols="80" rows="3"></textarea><br>
+        <input type="submit" value="Post a comment" class="btn-xs btn-success">
+    </form>
+    <hr>
+    }
+</div>

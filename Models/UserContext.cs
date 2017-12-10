@@ -8,7 +8,7 @@ namespace TheWallEntity.Models
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
         public DbSet<User> users {get;set;}
-        // public DbSet<Message> messages {get;set;}
-        // public DbSet<Comment> comments {get;set;}
+        public DbSet<Message> messages {get;set;}
+        public DbSet<Comment> comments {get;set;}
     }
 }
