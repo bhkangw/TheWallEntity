@@ -3,13 +3,12 @@
 <div class="container">
     <p>Post a message</p>
     <form action="/postmessage" method="POST">
-        <textarea asp-for="MContent" cols="200" rows="3" class="form-control"></textarea>
+        <textarea asp-for="MContent" cols="200" rows="3" class="form-control"></textarea><br>
         <span asp-validation-for="MContent" class="text-danger"></span>
-        <br>
-        <input type="submit" value="Post a message" class="btn btn-primary">
+        <input type="submit" value="Post a message" class="btn btn-primary pull-right">
     </form><br><br>
 
-    @foreach (var m in ViewBag.messages){
+    @foreach (var m in ViewBag.messages){ <!-- wasn't able to use partials on this page to bind multiple models -->
     <h5>@m.User.FirstName @m.User.LastName - @m.CreatedAt.ToString("MMMM d yyyy")</h5>
     <h4>@m.MessageContent</h4>if(ViewBag.UserInfo.UserId == m.User.UserId){
     <a class="btn-xs btn-danger" href="deletemessage/@m.MessageId">Delete</a>
@@ -24,8 +23,8 @@
     <p>Post a comment</p>
     <form action="/postcomment/@m.MessageId" method="POST">
         <textarea name="CContent" cols="80" rows="3" class="form-control"></textarea><br>
-        <input type="submit" value="Post a comment" class="btn-xs btn-success">
-    </form>
+        <input type="submit" value="Post a comment" class="btn-xs btn-success pull-right">
+    </form><br>
     <hr>
     }
 </div>
