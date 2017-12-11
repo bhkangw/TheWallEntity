@@ -10,14 +10,17 @@
     </form><br><br>
 
     @foreach (var m in ViewBag.messages){
-    <h5>@m.User.FirstName @m.User.LastName - @m.CreatedAt.ToString("MMMM d yyyy") </h5>
-    <h4>@m.MessageContent</h4>
+    <h5>@m.User.FirstName @m.User.LastName - @m.CreatedAt.ToString("MMMM d yyyy")</h5>
+    <h4>@m.MessageContent</h4>if(ViewBag.UserInfo.UserId == m.User.UserId){
+    <a class="btn-xs btn-danger" href="deletemessage/@m.MessageId">Delete</a>
         @foreach (var c in ViewBag.comments){
             @if(c.MessageId == m.MessageId){
                 <h6>@c.User.FirstName @c.User.LastName - @c.CreatedAt.ToString("MMMM d yyyy")</h6>
-                <p>@c.CommentContent</p>
+                <p>@c.CommentContent</p>if(ViewBag.UserInfo.UserId == c.User.UserId){
+                <a class="btn-xs btn-danger" href="deletecomment/@c.CommentId">Delete</a>}
             }
         }
+    }
     <p>Post a comment</p>
     <form action="/postcomment/@m.MessageId" method="POST">
         <textarea name="CContent" cols="80" rows="3" class="form-control"></textarea><br>

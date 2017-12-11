@@ -85,5 +85,31 @@ namespace TheWallEntity.Controllers
             ViewBag.UserInfo = ActiveUser;
             return View("Index");
         }
+
+        [HttpGet]
+        [Route("deletemessage/{MessageId}")]
+        public IActionResult DeleteMessage (int MessageId)
+        {
+            Message ToDelete = _context.messages.Where(message => message.MessageId == MessageId).SingleOrDefault();
+            _context.messages.Remove(ToDelete);
+            _context.SaveChanges();
+            ViewBag.UserInfo = ActiveUser;
+            ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
+            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
+            return View("Index");
+        }
+
+        [HttpGet]
+        [Route("deletecomment/{CommentId}")]
+        public IActionResult DeleteComment (int CommentId)
+        {
+            Comment ToDelete = _context.comments.Where(comment => comment.CommentId == CommentId).SingleOrDefault();
+            _context.comments.Remove(ToDelete);
+            _context.SaveChanges();
+            ViewBag.UserInfo = ActiveUser;
+            ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
+            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
+            return View("Index");
+        }
     }
 }
