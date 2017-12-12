@@ -47,10 +47,10 @@ namespace TheWallEntity.Controllers
                     UpdatedAt = DateTime.Now
                 };
 
-                User theUser = _context.Add(User).Entity; // add the new user object to the db
+                _context.Add(User); // add the new user object to the db
                 _context.SaveChanges();
 
-                HttpContext.Session.SetInt32("id", theUser.UserId); // save the user id in session
+                HttpContext.Session.SetInt32("id", User.UserId); // save the user id in session
                 return RedirectToAction("Index", "Wall"); // redirect to the Wall controller
             }
             return View("Index");

@@ -45,7 +45,7 @@ namespace TheWallEntity.Models
         [Key]
         public int CommentId { get; set; }
         public int MessageId { get; set; } // foreign key goes in the multiple side of a one to many
-        public Message Message { get; set; } // User objects created along with the foreign key
+        public Message Message { get; set; } // Message objects created along with the foreign key
         public int UserId { get; set; } // foreign key goes in the multiple side of a one to many
         public User User { get; set; } // User objects created along with the foreign key
         public string CommentContent { get; set; }

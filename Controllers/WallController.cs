@@ -34,7 +34,7 @@ namespace TheWallEntity.Controllers
             ViewBag.UserInfo = ActiveUser; // uses the ActiveUser instance as the current user for id, name, etc..
             // seems that the ViewBags below are necessary to include in every method?
             ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList(); // Grabs messages, includes User and Comment tables
-            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList(); // Grabs comments, includes User and Message tables
+            // NOT NECESSARY -> ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList(); // Grabs comments, includes User and Message tables
             return View();
         }
 
@@ -60,7 +60,6 @@ namespace TheWallEntity.Controllers
             }
             ViewBag.UserInfo = ActiveUser; // must redefine ViewBag for each new page refresh?
             ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
-            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
             return View("Index");
         }
 
@@ -87,7 +86,6 @@ namespace TheWallEntity.Controllers
             }
             ViewBag.UserInfo = ActiveUser; 
             ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
-            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
             return View("Index");
         }
 
@@ -101,7 +99,6 @@ namespace TheWallEntity.Controllers
 
             ViewBag.UserInfo = ActiveUser;
             ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
-            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
             return View("Index");
         }
 
@@ -115,7 +112,6 @@ namespace TheWallEntity.Controllers
 
             ViewBag.UserInfo = ActiveUser;
             ViewBag.messages = _context.messages.Include(m => m.User).ThenInclude(m => m.Comment).ToList();
-            ViewBag.comments = _context.comments.Include(m => m.User).ThenInclude(m => m.Message).ToList();
             return View("Index");
         }
     }
